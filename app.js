@@ -4,13 +4,15 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
-
+const home = document.getElementById('home');
+const removeSelection = document.getElementById('remove-selection');
 
 // home button
-const home = document.getElementById('home').addEventListener("click", function(){
+home.addEventListener("click", function(){
   window.location.reload(true);
   console.log("hello world");
 })
+
 // Get the input field
 var input = document.getElementById("search");
 
@@ -57,6 +59,7 @@ const getImages = (query) => {
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
+  console.log(event.target);
 
   let item = sliders.indexOf(img);
   if (item === -1) {
@@ -88,7 +91,10 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('duration').value || 1000;
+  let duration = document.getElementById('duration').value || 1000;
+  if(duration < 1000){
+    duration = 1000;
+  }
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
