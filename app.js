@@ -8,9 +8,8 @@ const home = document.getElementById('home');
 const removeSelection = document.getElementById('remove-selection');
 
 // home button
-home.addEventListener("click", function(){
+home.addEventListener("click", function() {
   window.location.reload(true);
-  console.log("hello world");
 })
 
 // Get the input field
@@ -46,11 +45,13 @@ const showImages = (images) => {
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
+    toggleSpinner();
   })
 
 }
 
 const getImages = (query) => {
+  toggleSpinner("start");
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
@@ -59,15 +60,13 @@ const getImages = (query) => {
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  console.log(event.target);
 
   let item = sliders.indexOf(img);
   if (item === -1) {
-  element.classList.add('added');
+    element.classList.add('added');
     sliders.push(img);
   } else {
-    sliders.splice(item,1);
-    console.log(this);
+    sliders.splice(item, 1);
     element.classList.remove('added')
   }
 }
@@ -91,8 +90,9 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  let duration = document.getElementById('duration').value || 1000;
-  if(duration < 1000){
+  let duration = document.getElementById('duration').value || 1;
+  duration *= 1000;
+  if (duration < 1000) {
     duration = 1000;
   }
   sliders.forEach(slide => {
@@ -104,7 +104,7 @@ const createSlider = () => {
     sliderContainer.appendChild(item)
   })
   changeSlide(0)
-  timer = setInterval(function () {
+  timer = setInterval(function() {
     slideIndex++;
     changeSlide(slideIndex);
   }, duration);
@@ -136,7 +136,7 @@ const changeSlide = (index) => {
   items[index].style.display = "block"
 }
 
-searchBtn.addEventListener('click', function () {
+searchBtn.addEventListener('click', function() {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search');
@@ -144,6 +144,18 @@ searchBtn.addEventListener('click', function () {
   sliders.length = 0;
 })
 
-sliderBtn.addEventListener('click', function () {
+sliderBtn.addEventListener('click', function() {
   createSlider()
 })
+
+const toggleSpinner = (status) => {
+  const spinner = document.getElementById('spinner');
+  if (status == 'start') {
+    spinner.classList.remove('d-none');
+    spinner.classList.add('d-flex');
+  }
+  else{
+    spinner.classList.add('d-none');
+    spinner.classList.remove('d-flex');
+}
+}
