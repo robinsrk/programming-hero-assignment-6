@@ -150,7 +150,7 @@ sliderBtn.addEventListener("click", function () {
 
 const toggleSpinner = (status) => {
   const spinner = document.getElementById("spinner");
-  if (status == "start") {
+  if (status === "start") {
     spinner.classList.remove("d-none");
     spinner.classList.add("d-flex");
   } else {
